@@ -1,18 +1,20 @@
-import browse
-import json
-from memory import PineconeMemory
 import datetime
+import json
+
 import agent_manager as agents
+import ai_functions as ai
+import browse
 import speak
 from config import Config
-import ai_functions as ai
-from file_operations import read_file, write_to_file, append_to_file, delete_file, search_files
-from execute_code import execute_python_file
-from json_parser import fix_and_parse_json
-from image_gen import generate_image
 from duckduckgo_search import ddg
+from execute_code import execute_python_file
+from file_operations import (append_to_file, delete_file, read_file,
+                             search_files, write_to_file)
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from image_gen import generate_image
+from json_parser import fix_and_parse_json
+from memory import PineconeMemory
 
 cfg = Config()
 
@@ -127,9 +129,10 @@ def google_search(query, num_results=8):
     return json.dumps(search_results, ensure_ascii=False, indent=4)
 
 def google_official_search(query, num_results=8):
+    import json
+
     from googleapiclient.discovery import build
     from googleapiclient.errors import HttpError
-    import json
 
     try:
         # Get the Google API key and Custom Search Engine ID from the config file
@@ -160,30 +163,6 @@ def google_official_search(query, num_results=8):
 
     # Return the list of search result URLs
     return search_results_links
-
-def browse_website(url, question):
-    summary = get_text_summary(url, question)
-    links = get_hyperlinks(url)
-
-    # Limit links to 5
-    if len(links) > 5:
-        links = links[:5]
-
-    result = f"""Website Content Summary: {summary}\n\nLinks: {links}"""
-
-    return result
-
-
-def get_text_summary(url, question):
-    text = browse.scrape_text(url)
-    summary = browse.summarize_text(text, question)
-    return """ "Result" : """ + summary
-
-
-def get_hyperlinks(url):
-    link_list = browse.scrape_links(url)
-    return link_list
-
 
 def commit_memory(string):
     _text = f"""Committing memory with string "{string}" """
