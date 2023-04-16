@@ -4,8 +4,9 @@ import browse
 from config import Config
 from duckduckgo_search import ddg
 
+
 class Google_Search:
-    def __init__(self, query, num_results=8, url, question):
+    def __init__(self, query, url, question, num_results=8):
         self.cfg = Config() #Vanish - not sure about this one
         self.query = query
         self.num_results = num_results
@@ -71,8 +72,8 @@ class Google_Search:
 
         
     def browse_website(self, url, question):
-        summary = get_text_summary(url, question) #Vanish - not sure how to fix this
-        links = get_hyperlinks(url) #Vanish - not sure how to fix this
+        summary = self.get_text_summary(url, question)
+        links = self.get_hyperlinks(url)
 
         # Limit links to 5
         if len(links) > 5:
