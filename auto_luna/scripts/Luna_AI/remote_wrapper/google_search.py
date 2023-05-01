@@ -6,20 +6,15 @@ from duckduckgo_search import ddg
 
 
 class Google_Search:
-    def __init__(self, query, url, question, num_results=8):
-        self.cfg = Config() #Vanish - not sure about this one
-        self.query = query
-        self.num_results = num_results
-        self.url = url
-        self.question = question
-
+    def __init__(self, cfg=Config):
+        self.cfg = cfg
 
     def google_search(self, query, num_results=8):
         search_results = []
         for j in ddg(query, max_results=num_results):
             search_results.append(j)
 
-        return json.dumps(search_results, ensure_ascii=False, indent=4) #Highly respectable lazy conversion
+        return json.dumps(search_results, ensure_ascii=False, indent=4)
 
     def google_official_search(self, query, num_results=8):
         import json

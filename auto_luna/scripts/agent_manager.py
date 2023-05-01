@@ -1,68 +1,66 @@
 from llm_utils import create_chat_completion
 
-next_key = 0
-agents = {}  # key, (task, full_message_history, model)
+class agent_manager:
 
-# Create new GPT agent
-# TODO: Centralise use of create_chat_completion() to globally enforce token limit
+    def __init__(self, next_key=0, agents={}):    
+        self.next_key = next_key
+        self.agents = {}  # key, (task, full_message_history, model)
 
-def create_agent(task, prompt, model):
-    global next_key
-    global agents
+    # Create new GPT agent
+    # TODO: Centralise use of create_chat_completion() to globally enforce token limit
 
-    messages = [{"role": "user", "content": prompt}, ]
+    def create_agent(self, task, prompt, model):
 
-    # Start GTP3 instance
-    agent_reply = create_chat_completion(
-        model=model,
-        messages=messages,
-    )
+        messages = [{"role": "user", "content": prompt}, ]
 
-    # Update full message history
-    messages.append({"role": "assistant", "content": agent_reply})
+        # Start GTP3 instance
+        agent_reply = create_chat_completion(
+            model=model,
+            messages=messages,
+        )
 
-    key = next_key
-    # This is done instead of len(agents) to make keys unique even if agents
-    # are deleted
-    next_key += 1
+        # Update full message history
+        messages.append({"role": "assistant", "content": agent_reply})
 
-    agents[key] = (task, messages, model)
+        key = self.next_key
+        # This is done instead of len(agents) to make keys unique even if agents
+        # are deleted
+        self.next_key += 1
 
-    return key, agent_reply
+        self.agents[key] = (task, messages, model)
 
-
-def message_agent(key, message):
-    global agents
-
-    task, messages, model = agents[int(key)]
-
-    # Add user message to message history before sending to agent
-    messages.append({"role": "user", "content": message})
-
-    # Start GTP3 instance
-    agent_reply = create_chat_completion(
-        model=model,
-        messages=messages,
-    )
-
-    # Update full message history
-    messages.append({"role": "assistant", "content": agent_reply})
-
-    return agent_reply
+        return key, agent_reply
 
 
-def list_agents():
-    global agents
+    def message_agent(self, key, message):
 
-    # Return a list of agent keys and their tasks
-    return [(key, task) for key, (task, _, _) in agents.items()]
+        task, messages, model = self.agents[int(key)]
+
+        # Add user message to message history before sending to agent
+        messages.append({"role": "user", "content": message})
+
+        # Start GTP3 instance
+        agent_reply = create_chat_completion(
+            model=model,
+            messages=messages,
+        )
+
+        # Update full message history
+        messages.append({"role": "assistant", "content": agent_reply})
+
+        return agent_reply
 
 
-def delete_agent(key):
-    global agents
+    def list_agents(self):
 
-    try:
-        del agents[int(key)]
-        return True
-    except KeyError:
-        return False
+        # Return a list of agent keys and their tasks
+        return [(key, task) for key, (task, _, _) in self.agents.items()]
+
+
+    def delete_agent(self, key):
+
+        try:
+            del self.agents[int(key)]
+            return True
+        except KeyError:
+            return False
