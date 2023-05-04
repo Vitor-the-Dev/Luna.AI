@@ -77,3 +77,9 @@ class Google_Search:
         result = f"""Website Content Summary: {summary}\n\nLinks: {links}"""
 
         return result
+
+    def get_luna_functions(self):
+
+
+        return {"Google_Search":"Google_Search","functions":[{"name":"<function name>", "description":"<function description>","function":<function_name()>},{second function}, {third function}]} 
+h
