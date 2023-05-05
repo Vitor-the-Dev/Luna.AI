@@ -17,7 +17,7 @@ import traceback
 import yaml
 import argparse
 
-
+#rework this file for modularity/scalability
 def print_to_console(
         title,
         title_color,
@@ -302,6 +302,9 @@ while True:
 
     # Print Assistant thoughts
     print_assistant_thoughts(assistant_reply)
+
+    #this gets moved to the cli/api no?
+    #since with both we just call "oerchestrator.py" right, that way any other infrastructure that needs to be built around it can be if that makes sense? like the api and the cli are both just access points for the same system and we can build an infinite amount of other access points
 
     # Get command name and arguments
     try:
