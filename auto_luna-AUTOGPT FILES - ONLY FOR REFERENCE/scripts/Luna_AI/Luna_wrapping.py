@@ -6,11 +6,11 @@ def access_api_wrapper(self, *args): #uses Django route to acess wrapper, useful
     return 0
 
 def access_local_wrapper(self, *args): #access a local wrappers
-    
+
     return 0
 def list_api_wrappers(self, *args):#list avaliable APIs on Django backend
 
     return 0
 def json_api_query(self, *args):
-    
+
     return 0
