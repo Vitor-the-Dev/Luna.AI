@@ -1,0 +1,12 @@
+{
+    llmmodels: {
+         vicuna:pathtovicunia
+    }
+    voicemodels: {
+
+
+    }
+    discordwrapper: {
+    
+    }
+}
