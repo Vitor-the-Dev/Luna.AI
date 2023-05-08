@@ -16,7 +16,18 @@ class orchestrator:
         return all(key in description for key in required_keys)
 
     def call_command(self, command_name, *arguments):
-        target_function = self.service_list[command_name]["function"]
+        target_function = None
+
+        # Search for the target function in the list returned by return_specific_functions
+        specific_functions = self.return_specific_functions(self.list_of_function_names)
+        for func_dict in specific_functions:
+            if func_dict["function_name"] == command_name:
+                target_function = func_dict["function"]
+                break
+
+        if target_function is None:
+            raise ValueError(f"Function '{command_name}' not found.")
+
         function_signature = inspect.signature(target_function)
         function_params = list(function_signature.parameters.values())
 
@@ -28,7 +39,8 @@ class orchestrator:
             for arg, param in zip(arguments, function_params)
         ]
 
-        target_function(*converted_arguments)
+        response = target_function(*converted_arguments)
+        return response
 
     def orchestrator_chat(self, prompt):
         # access the loaded llm set as orchestrator and creates an orchestrator instance, this should be used on the main function loop
@@ -49,6 +61,6 @@ class orchestrator:
             else:
                 arguments = []
 
-            self.call_command(command_name, *arguments)
+            responses.append(self.call_command(command_name, *arguments))
 
         return reply
