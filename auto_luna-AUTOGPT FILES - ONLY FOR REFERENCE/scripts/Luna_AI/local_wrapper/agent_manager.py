@@ -2,14 +2,14 @@ from llm_utils import create_chat_completion
 
 class agent_manager:
 
-    def __init__(self, next_key=0, agents={}):    
+    def __init__(self, next_key: int =0, agents={}):    
         self.next_key = next_key
         self.agents = {}  # key, (task, full_message_history, model)
 
     # Create new GPT agent
     # TODO: Centralise use of create_chat_completion() to globally enforce token limit
 
-    def create_agent(self, task, prompt, model):
+    def create_agent(self, task: str, prompt: str, model: str):
 
         messages = [{"role": "user", "content": prompt}, ]
 
@@ -32,7 +32,7 @@ class agent_manager:
         return key, agent_reply
 
 
-    def message_agent(self, key, message):
+    def message_agent(self, key: str, message: str):
 
         task, messages, model = self.agents[int(key)]
 
@@ -57,7 +57,7 @@ class agent_manager:
         return [(key, task) for key, (task, _, _) in self.agents.items()]
 
 
-    def delete_agent(self, key):
+    def delete_agent(self, key: str):
 
         try:
             del self.agents[int(key)]

@@ -9,7 +9,7 @@ cfg = Config()
 from llm_utils import create_chat_completion
 
 
-def create_chat_message(role, content):
+def create_chat_message(role: str, content: str):
     """
     Create a chat message with the given role and content.
 
@@ -23,7 +23,7 @@ def create_chat_message(role, content):
     return {"role": role, "content": content}
 
 
-def generate_context(prompt, relevant_memory, full_message_history, model):
+def generate_context(prompt: str, relevant_memory, full_message_history, model: str):
     current_context = [
         create_chat_message(
             "system", prompt), create_chat_message(

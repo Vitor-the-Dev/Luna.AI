@@ -14,7 +14,7 @@ tts_headers = {
     "xi-api-key": cfg.elevenlabs_api_key
 }
 
-def eleven_labs_speech(text, voice_index=0):
+def eleven_labs_speech(text: str, voice_index: int=0):
     tts_url = "https://api.elevenlabs.io/v1/text-to-speech/{voice_id}".format(
         voice_id=voices[voice_index])
     formatted_message = {"text": text}
@@ -32,13 +32,13 @@ def eleven_labs_speech(text, voice_index=0):
         print("Response content:", response.content)
         return False
 
-def gtts_speech(text):
+def gtts_speech(text: str):
     tts = gtts.gTTS(text)
     tts.save("speech.mp3")
     playsound("speech.mp3")
     os.remove("speech.mp3")
 
-def say_text(text, voice_index=0):
+def say_text(text: str, voice_index: int=0):
     if not cfg.elevenlabs_api_key:
         gtts_speech(text)
     else:

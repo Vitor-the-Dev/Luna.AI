@@ -8,7 +8,7 @@ if not os.path.exists(working_directory):
     os.makedirs(working_directory)
 
 
-def safe_join(base, *paths):
+def safe_join(base: str, *paths: str):
     new_path = os.path.join(base, *paths)
     norm_new_path = os.path.normpath(new_path)
 
@@ -18,7 +18,7 @@ def safe_join(base, *paths):
     return norm_new_path
 
 
-def read_file(filename):
+def read_file(filename: str):
     try:
         filepath = safe_join(working_directory, filename)
         with open(filepath, "r") as f:
@@ -28,7 +28,7 @@ def read_file(filename):
         return "Error: " + str(e)
 
 
-def write_to_file(filename, text):
+def write_to_file(filename: str, text: str):
     try:
         filepath = safe_join(working_directory, filename)
         directory = os.path.dirname(filepath)
@@ -41,7 +41,7 @@ def write_to_file(filename, text):
         return "Error: " + str(e)
 
 
-def append_to_file(filename, text):
+def append_to_file(filename: str, text: str):
     try:
         filepath = safe_join(working_directory, filename)
         with open(filepath, "a") as f:
@@ -51,7 +51,7 @@ def append_to_file(filename, text):
         return "Error: " + str(e)
 
 
-def delete_file(filename):
+def delete_file(filename: str):
     try:
         filepath = safe_join(working_directory, filename)
         os.remove(filepath)
@@ -59,7 +59,7 @@ def delete_file(filename):
     except Exception as e:
         return "Error: " + str(e)
 
-def search_files(directory):
+def search_files(directory: str):
     found_files = []
 
     if directory == "" or directory == "/":

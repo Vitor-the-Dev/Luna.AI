@@ -11,7 +11,7 @@ cfg = Config()
 
 working_directory = "auto_gpt_workspace"
 
-def generate_image(prompt):
+def generate_image(prompt: str):
 
     filename = str(uuid.uuid4()) + ".jpg"
     

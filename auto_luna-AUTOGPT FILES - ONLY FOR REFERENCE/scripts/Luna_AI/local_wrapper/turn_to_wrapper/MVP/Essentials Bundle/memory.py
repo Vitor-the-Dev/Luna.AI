@@ -5,7 +5,7 @@ import openai
 cfg = Config()
 
 
-def get_ada_embedding(text):
+def get_ada_embedding(text: str):
     text = text.replace("\n", " ")
     return openai.Embedding.create(input=[text], model="text-embedding-ada-002")["data"][0]["embedding"]
 
@@ -31,7 +31,7 @@ class PineconeMemory(metaclass=Singleton):
             pinecone.create_index(table_name, dimension=dimension, metric=metric, pod_type=pod_type)
         self.index = pinecone.Index(table_name)
 
-    def add(self, data):
+    def add(self, data: str):
         vector = get_ada_embedding(data)
         # no metadata here. We may wish to change that long term.
         resp = self.index.upsert([(str(self.vec_num), vector, {"raw_text": data})])
@@ -39,14 +39,14 @@ class PineconeMemory(metaclass=Singleton):
         self.vec_num += 1
         return _text
 
-    def get(self, data):
+    def get(self, data: str):
         return self.get_relevant(data, 1)
 
     def clear(self):
         self.index.delete(deleteAll=True)
         return "Obliviated"
 
-    def get_relevant(self, data, num_relevant=5):
+    def get_relevant(self, data: str, num_relevant: int =5):
         """
         Returns all the data in the memory that is relevant to the given data.
         :param data: The data to compare to.

@@ -3,7 +3,7 @@ import os.path
 
 class file_operations:
 
-    def __init__(self, working_directory="auto_gpt_workspace"):
+    def __init__(self, working_directory: str ="auto_gpt_workspace"):
         # Set a dedicated folder for file I/O
         self.working_directory = working_directory
 
@@ -11,7 +11,7 @@ class file_operations:
             os.makedirs(self.working_directory)
 
 
-    def safe_join(self, base, *paths):
+    def safe_join(self, base: str, *paths: str):
         new_path = os.path.join(base, *paths)
         norm_new_path = os.path.normpath(new_path)
 
@@ -21,7 +21,7 @@ class file_operations:
         return norm_new_path
 
 
-    def read_file(self, filename):
+    def read_file(self, filename: str):
         try:
             filepath = self.safe_join(self.working_directory, filename)
             with open(filepath, "r") as f:
@@ -31,7 +31,7 @@ class file_operations:
             return "Error: " + str(e)
 
 
-    def write_to_file(self, filename, text):
+    def write_to_file(self, filenam: str, text: str):
         try:
             filepath = self.safe_join(self.working_directory, filename)
             directory = os.path.dirname(filepath)
@@ -44,7 +44,7 @@ class file_operations:
             return "Error: " + str(e)
 
 
-    def append_to_file(self, filename, text):
+    def append_to_file(self, filename: str, text: str):
         try:
             filepath = self.safe_join(self.working_directory, filename)
             with open(filepath, "a") as f:
@@ -54,7 +54,7 @@ class file_operations:
             return "Error: " + str(e)
 
 
-    def delete_file(self, filename):
+    def delete_file(self, filename: str):
         try:
             filepath = self.safe_join(self.working_directory, filename)
             os.remove(filepath)
@@ -62,7 +62,7 @@ class file_operations:
         except Exception as e:
             return "Error: " + str(e)
 
-    def search_files(self, directory):
+    def search_files(self, directory: str):
         found_files = []
 
         if directory == "" or directory == "/":

@@ -6,17 +6,17 @@ from duckduckgo_search import ddg
 
 
 class Google_Search:
-    def __init__(self, cfg=Config):
+    def __init__(self, cfg: 'Config'=Config):
         self.cfg = cfg
 
-    def google_search(self, query, num_results=8):
+    def google_search(self, query: str, num_results: int =8):
         search_results = []
         for j in ddg(query, max_results=num_results):
             search_results.append(j)
 
         return json.dumps(search_results, ensure_ascii=False, indent=4)
 
-    def google_official_search(self, query, num_results=8):
+    def google_official_search(self, query: str, num_results: int =8):
         import json
 
         from googleapiclient.discovery import build
@@ -56,17 +56,17 @@ class Google_Search:
 
 
 
-    def get_text_summary(self, url, question):
+    def get_text_summary(self, url: str, question: str):
         text = browse.scrape_text(url)
         summary = browse.summarize_text(text, question)
         return """ "Result" : """ + summary
 
-    def get_hyperlinks(self, url):
+    def get_hyperlinks(self, url: str):
         link_list = browse.scrape_links(url)
         return link_list
 
         
-    def browse_website(self, url, question):
+    def browse_website(self, url: str, question: str):
         summary = self.get_text_summary(url, question)
         links = self.get_hyperlinks(url)
 

@@ -5,7 +5,7 @@ from llm_utils import create_chat_completion
 
 cfg = Config()
 
-def scrape_text(url):
+def scrape_text(url: str):
     response = requests.get(url, headers=cfg.user_agent_header)
 
     # Check if the response contains an HTTP error
@@ -39,7 +39,7 @@ def format_hyperlinks(hyperlinks):
     return formatted_links
 
 
-def scrape_links(url):
+def scrape_links(url: str):
     response = requests.get(url, headers=cfg.user_agent_header)
 
     # Check if the response contains an HTTP error
@@ -56,7 +56,7 @@ def scrape_links(url):
     return format_hyperlinks(hyperlinks)
 
 
-def split_text(text, max_length=8192):
+def split_text(text: str, max_length: int=8192):
     paragraphs = text.split("\n")
     current_length = 0
     current_chunk = []
@@ -74,13 +74,13 @@ def split_text(text, max_length=8192):
         yield "\n".join(current_chunk)
 
 
-def create_message(chunk, question):
+def create_message(chunk: str, question: str):
     return {
         "role": "user",
         "content": f"\"\"\"{chunk}\"\"\" Using the above text, please answer the following question: \"{question}\" -- if the question cannot be answered using the text, please summarize the text."
     }
 
-def summarize_text(text, question):
+def summarize_text(text: str, question: str):
     if not text:
         return "Error: No text to summarize"
 

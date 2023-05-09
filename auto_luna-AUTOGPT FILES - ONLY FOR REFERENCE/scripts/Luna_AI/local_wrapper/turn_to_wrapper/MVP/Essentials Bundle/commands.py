@@ -25,7 +25,7 @@ def is_valid_int(value):
     except ValueError:
         return False
 
-def get_command(response):
+def get_command(response: str):
     try:
         response_json = fix_and_parse_json(response)
         
@@ -53,7 +53,7 @@ def get_command(response):
         return "Error:", str(e)
 
 
-def execute_command(command_name, arguments): #pass switcher from the wrappers_config
+def execute_command(command_name: str, arguments): #pass switcher from the wrappers_config
     memory = PineconeMemory()
     #not forget stuff from Luna use local wrappers functions to parse through files on local_wrapper
     #import them, add to switcher dictionary and add config json to the pinecone so the AI remembers how to use local commands
@@ -75,14 +75,14 @@ def get_datetime():
         datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
-def google_search(query, num_results=8):
+def google_search(query: str, num_results: int=8):
     search_results = []
     for j in ddg(query, max_results=num_results):
         search_results.append(j)
 
     return json.dumps(search_results, ensure_ascii=False, indent=4)
 
-def google_official_search(query, num_results=8):
+def google_official_search(query: str, num_results: int=8):
     from googleapiclient.discovery import build
     from googleapiclient.errors import HttpError
     import json
@@ -117,7 +117,7 @@ def google_official_search(query, num_results=8):
     # Return the list of search result URLs
     return search_results_links
 
-def browse_website(url, question):
+def browse_website(url: str, question: str):
     summary = get_text_summary(url, question)
     links = get_hyperlinks(url)
 
@@ -130,24 +130,24 @@ def browse_website(url, question):
     return result
 
 
-def get_text_summary(url, question):
+def get_text_summary(url: str, question: str):
     text = browse.scrape_text(url)
     summary = browse.summarize_text(text, question)
     return """ "Result" : """ + summary
 
 
-def get_hyperlinks(url):
+def get_hyperlinks(url: str):
     link_list = browse.scrape_links(url)
     return link_list
 
 
-def commit_memory(string):
+def commit_memory(string: str):
     _text = f"""Committing memory with string "{string}" """
     mem.permanent_memory.append(string)
     return _text
 
 
-def delete_memory(key):
+def delete_memory(key: int):
     if key >= 0 and key < len(mem.permanent_memory):
         _text = "Deleting memory with key " + str(key)
         del mem.permanent_memory[key]
@@ -158,7 +158,7 @@ def delete_memory(key):
         return None
 
 
-def overwrite_memory(key, string):
+def overwrite_memory(key: int, string: str):
     # Check if the key is a valid integer
     if is_valid_int(key):
         key_int = int(key)
@@ -189,7 +189,7 @@ def shutdown():
     quit()
 
 
-def start_agent(name, task, prompt, model=cfg.fast_llm_model):
+def start_agent(name: str, task: str, prompt: str, model: str=cfg.fast_llm_model):
     global cfg
 
     # Remove underscores from name
@@ -212,7 +212,7 @@ def start_agent(name, task, prompt, model=cfg.fast_llm_model):
     return f"Agent {name} created with key {key}. First response: {agent_response}"
 
 
-def message_agent(key, message):
+def message_agent(key: int, message: str):
     global cfg
 
     # Check if the key is a valid integer
@@ -234,7 +234,7 @@ def list_agents():
     return agents.list_agents()
 
 
-def delete_agent(key):
+def delete_agent(key: int):
     result = agents.delete_agent(key)
     if not result:
         return f"Agent {key} does not exist."
